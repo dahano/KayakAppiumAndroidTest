@@ -11,7 +11,7 @@ import org.openqa.selenium.WebElement;
  * Created by ofirdahan on 5/12/17.
  */
 
-public class WelcomePageObjects extends BaseSetup{
+public class WelcomePage extends BaseSetup{
 
     public void loginWithFacebook(AndroidDriver driver){
         //ARRANGE
@@ -29,14 +29,27 @@ public class WelcomePageObjects extends BaseSetup{
         }
     }
 
-    public void navigateWithoutLoggingIn(AndroidDriver driver){
+    public void loginWithEmail(AndroidDriver driver){
         //ARRANGE
-        WebElement closeButton = driver.findElementByXPath("//android.widget.ImageView[@index='2']");
+        WebElement loginWithEmailButton = driver.findElement(By.id("com.kayak.android:id/useEmailBtn"));
 
         //ACT
-        closeButton.click();
+        loginWithEmailButton.click();
 
         //ASSERT
+        try{
+            WebElement signUpHeader = driver.findElement(By.id("com.kayak.android:id/loginSignupFragmentHeading"));
+            Assert.assertTrue(signUpHeader.isEnabled());
+        }catch (NoSuchElementException nse){
+            nse.printStackTrace();
+            System.out.println("Sign Up Header was not found " + nse);
+        }
+    }
+
+    public void navigateWithoutLoggingIn(AndroidDriver driver){
+        WebElement closeButton = driver.findElement(By.id("com.kayak.android:id/closeBtn"));
+        closeButton.click();
+
         try {
             WebElement searchListingPage = driver.findElement(By.id("com.kayak.android:id/pager"));
             Assert.assertTrue(searchListingPage.isEnabled());
